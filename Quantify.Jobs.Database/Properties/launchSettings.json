@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Quantify.Jobs.Database": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

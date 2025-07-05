@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\0001.DDL_CT_TBL_Client.sql" />
+    <None Remove="Scripts\0002.DDL_CT_TBL_Job.sql" />
+    <None Remove="Scripts\0003.DDL_CT_TRG_ClientAudit.sql" />
+    <None Remove="Scripts\0004.DDL_CT_TRG_ClientAudit.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\0001.DDL_CT_TBL_Client.sql" />
+    <EmbeddedResource Include="Scripts\0002.DDL_CT_TBL_Job.sql" />
+    <EmbeddedResource Include="Scripts\0003.DDL_CT_TRG_ClientAudit.sql" />
+    <EmbeddedResource Include="Scripts\0004.DDL_CT_TRG_ClientAudit.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup-sqlserver" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1-Preview.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
