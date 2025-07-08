@@ -11,15 +11,17 @@
   <ItemGroup>
     <None Remove="Scripts\0001.DDL_CT_TBL_Client.sql" />
     <None Remove="Scripts\0002.DDL_CT_TBL_Job.sql" />
-    <None Remove="Scripts\0003.DDL_CT_TRG_ClientAudit.sql" />
-    <None Remove="Scripts\0004.DDL_CT_TRG_ClientAudit.sql" />
+    <None Remove="Scripts\001_RunOnce\001_Tables\0001_CT_TBL_Client.sql" />
+    <None Remove="Scripts\001_RunOnce\001_Tables\0002_CT_TBL_Job.sql" />
+    <None Remove="Scripts\002_RunAlways\001_Triggers\TRG_ClientAudit.sql" />
+    <None Remove="Scripts\002_RunAlways\001_Triggers\TRG_JobAudit.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\0001.DDL_CT_TBL_Client.sql" />
-    <EmbeddedResource Include="Scripts\0002.DDL_CT_TBL_Job.sql" />
-    <EmbeddedResource Include="Scripts\0003.DDL_CT_TRG_ClientAudit.sql" />
-    <EmbeddedResource Include="Scripts\0004.DDL_CT_TRG_ClientAudit.sql" />
+    <EmbeddedResource Include="Scripts\001_RunOnce\001_Tables\0001_CT_TBL_Client.sql" />
+    <EmbeddedResource Include="Scripts\001_RunOnce\001_Tables\0002_CT_TBL_Job.sql" />
+    <EmbeddedResource Include="Scripts\002_RunAlways\001_Triggers\TRG_ClientAudit.sql" />
+    <EmbeddedResource Include="Scripts\002_RunAlways\001_Triggers\TRG_JobAudit.sql" />
   </ItemGroup>
 
   <ItemGroup>

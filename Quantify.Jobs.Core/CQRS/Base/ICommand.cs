@@ -1,11 +1,20 @@
 ﻿namespace Quantify.Jobs.Core.CQRS.Base
 {
-    public interface ICommand<TResult>
+    public interface ICommand
     {
     }
 
-    public interface ICommandHandler<TCommand, TResult>
+    public interface ICommand<TResult> : ICommand
     {
-        Task<TResult> Handle(TCommand command, CancellationToken cancellationToken = default);
+    }
+
+    public interface ICommandHandler<TCommand> where TCommand : ICommand
+    {
+        Task Handle(TCommand command, CancellationToken cancellationToken);
+    }
+
+    public interface ICommandHandler<TCommand, TResult> where TCommand : ICommand<TResult>
+    {
+        Task<TResult> Handle(TCommand command, CancellationToken cancellationToken);
     }
 }

@@ -5,7 +5,7 @@ using Quantify.Jobs.Core.Interfaces.Data;
 using Quantify.Jobs.Core.Interfaces.Repositories;
 using System.Data;
 
-namespace Quantify.Jobs.Infrastructure.Repository
+namespace Quantify.Jobs.Infrastructure.Repositories
 {
     public class ClientRepository : IClientRepository
     {

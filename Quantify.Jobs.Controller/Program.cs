@@ -1,8 +1,12 @@
 
+using Quantify.Jobs.Core.CQRS.Base;
+using Quantify.Jobs.Core.CQRS.Commands;
+using Quantify.Jobs.Core.CQRS.Queries.Client;
+using Quantify.Jobs.Core.Entities;
 using Quantify.Jobs.Core.Interfaces.Data;
 using Quantify.Jobs.Core.Interfaces.Repositories;
 using Quantify.Jobs.Infrastructure.Data;
-using Quantify.Jobs.Infrastructure.Repository;
+using Quantify.Jobs.Infrastructure.Repositories;
 
 namespace Quantify.Jobs.Controller;
 
@@ -23,8 +27,17 @@ public class Program
 
         builder.Services.AddSingleton<IDbConnectionFactory>(sp => new SqlConnectionFactory(connectionString));
 
+        #region Repositories
         builder.Services.AddScoped<IClientRepository, ClientRepository>();
         builder.Services.AddScoped<IJobRepository, JobRepository>();
+        #endregion
+
+        #region CQRS
+        builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
+        builder.Services.AddScoped<IQueryDispatcher, QueryDispatcher>();
+        builder.Services.AddTransient<IQueryHandler<GetClientQuery, Client>, GetClientQueryHandler>();
+        builder.Services.AddTransient<ICommandHandler<CreateClientCommand, int>, CreateClientCommandHandler>();
+        #endregion
 
         var app = builder.Build();
 

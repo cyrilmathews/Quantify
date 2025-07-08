@@ -1,0 +1,16 @@
+### Create a new client
+POST http://localhost:5000/api/client
+Content-Type: application/json
+
+{
+  "code": "CLIENT001",
+  "name": "Acme Corporation"
+}
+
+###
+
+### Get a client by id (replace 1 with the actual client id)
+GET http://localhost:5000/api/client/1
+Accept: application/json
+
+###

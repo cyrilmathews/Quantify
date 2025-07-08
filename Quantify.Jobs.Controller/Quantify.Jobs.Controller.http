@@ -1,6 +1,0 @@
-@Quantify.Jobs.Controller_HostAddress = http://localhost:5117
-
-GET {{Quantify.Jobs.Controller_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

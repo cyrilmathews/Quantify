@@ -12,7 +12,9 @@ BEGIN
         [Code],
         [Name],
         [CreatedBy],
+        [CreatedOn],
         [UpdatedBy],
+        [UpdatedOn],
         [AuditAction] -- The new column to log the action
     )
     -- Part 1: Handle INSERT and UPDATE operations from the 'inserted' table.
@@ -21,7 +23,9 @@ BEGIN
         i.[Code],
         i.[Name],
         i.[CreatedBy],
+        i.[CreatedOn],
         i.[UpdatedBy],
+        i.[UpdatedOn],
         -- Use a CASE statement to determine the action type.
         -- If a matching row exists in 'deleted', it's an UPDATE.
         -- Otherwise, it's a new INSERT.
@@ -40,7 +44,9 @@ BEGIN
         d.[Code],
         d.[Name],
         d.[CreatedBy],
+        d.[CreatedOn],
         d.[UpdatedBy],
+        d.[UpdatedOn],
         'DEL' AS AuditAction -- The action is always 'DEL' for this part.
     FROM
         deleted AS d
