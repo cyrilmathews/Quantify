@@ -1,6 +1,6 @@
 
 using Quantify.Jobs.Core.CQRS.Base;
-using Quantify.Jobs.Core.CQRS.Commands;
+using Quantify.Jobs.Core.CQRS.Commands.Client;
 using Quantify.Jobs.Core.CQRS.Queries.Client;
 using Quantify.Jobs.Core.Entities;
 using Quantify.Jobs.Core.Interfaces.Data;
@@ -35,8 +35,18 @@ public class Program
         #region CQRS
         builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
         builder.Services.AddScoped<IQueryDispatcher, QueryDispatcher>();
+
+        #region Queries
         builder.Services.AddTransient<IQueryHandler<GetClientQuery, Client>, GetClientQueryHandler>();
+        builder.Services.AddTransient<IQueryHandler<GetAllClientsQuery, IEnumerable<Client>>, GetAllClientsQueryHandler>();
+        #endregion
+
+        #region Commands
         builder.Services.AddTransient<ICommandHandler<CreateClientCommand, int>, CreateClientCommandHandler>();
+        builder.Services.AddTransient<ICommandHandler<UpdateClientCommand, bool>, UpdateClientCommandHandler>();
+        builder.Services.AddTransient<ICommandHandler<DeleteClientCommand, bool>, DeleteClientCommandHandler>();
+        #endregion
+
         #endregion
 
         var app = builder.Build();

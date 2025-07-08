@@ -1,17 +1,16 @@
 ﻿using Quantify.Jobs.Core.CQRS.Base;
-using Quantify.Jobs.Core.Entities;
 using Quantify.Jobs.Core.Interfaces.Repositories;
 
-namespace Quantify.Jobs.Core.CQRS.Commands
+namespace Quantify.Jobs.Core.CQRS.Commands.Client
 {
     public class CreateClientCommand : ICommand<int>
     {
-        public CreateClientCommand(Client client)
+        public CreateClientCommand(Entities.Client client)
         {
             Client = client;
         }
 
-        public Client Client { get; set; }
+        public Entities.Client Client { get; set; }
     }
 
     public class CreateClientCommandHandler : ICommandHandler<CreateClientCommand, int>

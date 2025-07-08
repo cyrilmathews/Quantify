@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Quantify.Jobs.Core.CQRS.Base;
-using Quantify.Jobs.Core.CQRS.Commands;
+using Quantify.Jobs.Core.CQRS.Commands.Client;
 using Quantify.Jobs.Core.CQRS.Queries.Client;
 using Quantify.Jobs.Core.Entities;
 
@@ -23,25 +23,65 @@ namespace Quantify.Jobs.Controller.Controllers
         public async Task<ActionResult<Client>> GetClient(int id, CancellationToken cancellationToken)
         {
             var client = await _queryDispatcher.Dispatch<GetClientQuery, Client>(new GetClientQuery(id), cancellationToken);
-            
             return (client == null) ? NotFound() : Ok(client);
         }
 
         [HttpPost]
         public async Task<ActionResult<Client>> AddClient([FromBody] Client client, CancellationToken cancellationToken)
         {
-            // Add the client and get the new Id
-            var clientId = await _commandDispatcher.Dispatch<CreateClientCommand, int>(
-                new CreateClientCommand(client), cancellationToken);
-
-            // Retrieve the created client
-            var createdClient = await _queryDispatcher.Dispatch<GetClientQuery, Client>(
-                new GetClientQuery(clientId), cancellationToken);
+            var clientId = await _commandDispatcher.Dispatch<CreateClientCommand, int>(new CreateClientCommand(client), cancellationToken);
+            var createdClient = await _queryDispatcher.Dispatch<GetClientQuery, Client>(new GetClientQuery(clientId), cancellationToken);
 
             if (createdClient == null)
                 return NotFound();
 
             return CreatedAtAction(nameof(GetClient), new { id = createdClient.Id }, createdClient);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Client>>> GetAllClients(CancellationToken cancellationToken)
+        {
+            var clients = await _queryDispatcher.Dispatch<GetAllClientsQuery, IEnumerable<Client>>(new GetAllClientsQuery(), cancellationToken);
+            return Ok(clients);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Client>> UpdateClient(int id, [FromBody] Client client, CancellationToken cancellationToken)
+        {
+            if (id != client.Id)
+            {
+                return BadRequest("Client ID mismatch.");
+            }
+
+            var result = await _commandDispatcher.Dispatch<UpdateClientCommand, bool>(new UpdateClientCommand(client), cancellationToken);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            // Fetch the updated client data
+            var updatedClient = await _queryDispatcher.Dispatch<GetClientQuery, Client>(new GetClientQuery(id), cancellationToken);
+
+            if (updatedClient == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updatedClient);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteClient(int id, CancellationToken cancellationToken)
+        {
+            var result = await _commandDispatcher.Dispatch<DeleteClientCommand, bool>(new DeleteClientCommand(id), cancellationToken);
+            
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }
