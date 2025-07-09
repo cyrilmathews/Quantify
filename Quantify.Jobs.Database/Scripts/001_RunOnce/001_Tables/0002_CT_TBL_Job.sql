@@ -4,10 +4,10 @@ CREATE TABLE [dbo].[Job] (
     [ClientId] INT NOT NULL,
     [Code] VARCHAR(20) NOT NULL,
     [Name] VARCHAR(100) NOT NULL,
-    [CreatedBy] INT NOT NULL,
-    [CreatedOn] DATETIME NOT NULL,
-    [UpdatedBy] INT NULL,
-    [UpdatedOn] DATETIME NULL,
+    [CreatedBy] INT NOT NULL CONSTRAINT DF_Job_CreatedBy DEFAULT 1,
+    [CreatedOn] DATETIME NOT NULL CONSTRAINT DF_Job_CreatedOn DEFAULT GETUTCDATE(),
+    [UpdatedBy] INT NULL CONSTRAINT DF_Job_UpdatedBy DEFAULT 1,
+    [UpdatedOn] DATETIME NULL CONSTRAINT DF_Job_UpdatedOn DEFAULT GETUTCDATE(),
     [Version] ROWVERSION NOT NULL
     CONSTRAINT FK_Job_Client FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Client]([Id])
 );

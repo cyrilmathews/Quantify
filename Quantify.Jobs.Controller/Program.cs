@@ -1,7 +1,8 @@
-
 using Quantify.Jobs.Core.CQRS.Base;
 using Quantify.Jobs.Core.CQRS.Commands.Client;
+using Quantify.Jobs.Core.CQRS.Commands.Job;
 using Quantify.Jobs.Core.CQRS.Queries.Client;
+using Quantify.Jobs.Core.CQRS.Queries.Job;
 using Quantify.Jobs.Core.Entities;
 using Quantify.Jobs.Core.Interfaces.Data;
 using Quantify.Jobs.Core.Interfaces.Repositories;
@@ -39,12 +40,20 @@ public class Program
         #region Queries
         builder.Services.AddTransient<IQueryHandler<GetClientQuery, Client>, GetClientQueryHandler>();
         builder.Services.AddTransient<IQueryHandler<GetAllClientsQuery, IEnumerable<Client>>, GetAllClientsQueryHandler>();
+
+        builder.Services.AddTransient<IQueryHandler<GetJobQuery, Job?>, GetJobQueryHandler>();
+        builder.Services.AddTransient<IQueryHandler<GetAllJobsQuery, IEnumerable<Job>>, GetAllJobsQueryHandler>();
+        builder.Services.AddTransient<IQueryHandler<GetJobsByClientIdQuery, IEnumerable<Job>>, GetJobsByClientIdQueryHandler>();
         #endregion
 
         #region Commands
         builder.Services.AddTransient<ICommandHandler<CreateClientCommand, int>, CreateClientCommandHandler>();
         builder.Services.AddTransient<ICommandHandler<UpdateClientCommand, bool>, UpdateClientCommandHandler>();
         builder.Services.AddTransient<ICommandHandler<DeleteClientCommand, bool>, DeleteClientCommandHandler>();
+
+        builder.Services.AddTransient<ICommandHandler<CreateJobCommand, int>, CreateJobCommandHandler>();
+        builder.Services.AddTransient<ICommandHandler<UpdateJobCommand, bool>, UpdateJobCommandHandler>();
+        builder.Services.AddTransient<ICommandHandler<DeleteJobCommand, bool>, DeleteJobCommandHandler>();
         #endregion
 
         #endregion

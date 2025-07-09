@@ -35,6 +35,6 @@ namespace Quantify.Jobs.Core.Entities
         public byte[]? Version { get; set; }
 
         [ForeignKey("ClientId")]
-        public virtual required Client Client { get; set; }
+        public virtual Client? Client { get; set; }
     }
 }

@@ -1,0 +1,42 @@
+@Quantify.Jobs.Api_HostAddress = http://localhost:61029/api
+
+### Create a new job
+POST {{Quantify.Jobs.Api_HostAddress}}/job
+Content-Type: application/json
+
+{
+  "clientId": 2,
+  "code": "J002",
+  "name": "HAL Job One"
+}
+
+### Get a job by id (replace 1 with the actual job id)
+GET {{Quantify.Jobs.Api_HostAddress}}/job/2
+Accept: application/json
+
+### Get all jobs
+GET {{Quantify.Jobs.Api_HostAddress}}/job
+Accept: application/json
+
+### Get jobs by client id (replace 1 with the actual client id)
+GET {{Quantify.Jobs.Api_HostAddress}}/job/by-client/1
+Accept: application/json
+
+### Update a job (replace 1 with the actual job id)
+PUT {{Quantify.Jobs.Api_HostAddress}}/job/2
+Content-Type: application/json
+
+{
+  "id": 2,
+  "clientId": 1,
+  "code": "J001",
+  "name": "Acme One Updated",
+  "createdBy": 1,
+  "updatedBy": 2,
+  "version": "AAAAAAAAB9Y="
+}
+
+### Delete a job (replace 1 with the actual job id)
+DELETE {{Quantify.Jobs.Api_HostAddress}}/job/1
+
+###

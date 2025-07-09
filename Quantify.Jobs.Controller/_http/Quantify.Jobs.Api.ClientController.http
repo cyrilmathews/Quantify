@@ -5,8 +5,8 @@ POST {{Quantify.Jobs.Api_HostAddress}}/client
 Content-Type: application/json
 
 {
-  "code": "CLIENT001",
-  "name": "Acme Corporation"
+  "code": "CLIENT002",
+  "name": "HAL Corporation"
 }
 
 ###
