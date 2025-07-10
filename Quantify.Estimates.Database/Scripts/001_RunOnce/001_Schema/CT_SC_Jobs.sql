@@ -1,0 +1,5 @@
+﻿IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'Jobs')
+BEGIN
+    EXEC('CREATE SCHEMA Jobs');
+END
+GO

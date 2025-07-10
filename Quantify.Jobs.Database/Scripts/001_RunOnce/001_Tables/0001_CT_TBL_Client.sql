@@ -20,5 +20,6 @@ CREATE TABLE [dbo].[ClientAudit] (
     [CreatedOn] DATETIME NOT NULL,
     [UpdatedBy] INT NULL,
     [UpdatedOn] DATETIME NULL,
-    [AuditAction] VARCHAR(3) NOT NULL
+    [AuditAction] VARCHAR(3) NOT NULL,
+    [AuditTimestamp] DATETIME NOT NULL DEFAULT GETUTCDATE()
 );

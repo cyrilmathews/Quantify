@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quantify.Jobs.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quantify.Jobs.Core", "Quantify.Jobs.Core\Quantify.Jobs.Core.csproj", "{92D693F4-D121-B6B1-C837-C03CFC601D5E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Estimates", "Estimates", "{C2E17071-EA73-42CF-A2F5-6945DB8FA618}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quantify.Estimates.Database", "Quantify.Estimates.Database\Quantify.Estimates.Database.csproj", "{9D0302BE-7319-450D-9F3C-A9701491C15D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,10 @@ Global
 		{92D693F4-D121-B6B1-C837-C03CFC601D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92D693F4-D121-B6B1-C837-C03CFC601D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92D693F4-D121-B6B1-C837-C03CFC601D5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D0302BE-7319-450D-9F3C-A9701491C15D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D0302BE-7319-450D-9F3C-A9701491C15D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D0302BE-7319-450D-9F3C-A9701491C15D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D0302BE-7319-450D-9F3C-A9701491C15D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +64,7 @@ Global
 		{C7C4D505-E8E0-425F-B9F8-477CADFC580D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{959E5A36-266A-467B-BD68-6DA6542F81EA} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{92D693F4-D121-B6B1-C837-C03CFC601D5E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{9D0302BE-7319-450D-9F3C-A9701491C15D} = {C2E17071-EA73-42CF-A2F5-6945DB8FA618}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8D19CE97-D794-4E2E-AC2A-963BD2674DDE}

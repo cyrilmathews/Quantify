@@ -4,7 +4,7 @@ using DbUp.Support;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
-namespace Quantify.Jobs.Database
+namespace Quantify.Estimates.Database
 {
     public class Program
     {
@@ -35,8 +35,8 @@ namespace Quantify.Jobs.Database
             var upgrader =
                 DeployChanges.To
                     .SqlDatabase(connectionString) // Specify the database
-                    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly(), script => script.StartsWith("Quantify.Jobs.Database.Scripts._001_RunOnce"), new SqlScriptOptions { ScriptType = ScriptType.RunOnce })
-                    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly(), script => script.StartsWith("Quantify.Jobs.Database.Scripts._002_RunAlways"), new SqlScriptOptions { ScriptType = ScriptType.RunAlways })
+                    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly(), script => script.StartsWith("Quantify.Estimates.Database.Scripts._001_RunOnce"), new SqlScriptOptions { ScriptType = ScriptType.RunOnce })
+                    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly(), script => script.StartsWith("Quantify.Estimates.Database.Scripts._002_RunAlways"), new SqlScriptOptions { ScriptType = ScriptType.RunAlways })
                     .LogToConsole() // Log output to the console
                     .Build();
 
