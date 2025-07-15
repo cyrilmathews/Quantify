@@ -1,23 +1,4 @@
-﻿CREATE TABLE [dbo].[EstimateAudit] (
-    [Id] INT IDENTITY(1,1) PRIMARY KEY,
-    [EstimateId] INT NOT NULL, -- Renamed from Id to EstimateId to avoid conflict and clearly reference the original table's Id
-    [JobId] INT NOT NULL,
-    [Amount] DECIMAL(18, 2) NOT NULL,
-    [CreatedBy] INT NOT NULL,
-    [CreatedOn] DATETIME NOT NULL,
-    [UpdatedBy] INT NULL,
-    [UpdatedOn] DATETIME NULL,
-    -- [Version] ROWVERSION NOT NULL, -- ROWVERSION is not typically audited directly as it's a changing internal value.
-                                    -- If you need to track the version, you might store its value as a BIGINT.
-                                    -- For audit purposes, the state before/after the change is usually sufficient.
-    [AuditAction] VARCHAR(3) NOT NULL, -- 'INS' for Insert, 'UPD' for Update, 'DEL' for Delete
-    [AuditTimestamp] DATETIME NOT NULL DEFAULT GETUTCDATE(), -- When the audit record was created
-    [AuditUser] INT NULL -- User who performed the audit action (optional, but good practice)
-);
-
-GO
-
-CREATE OR ALTER TRIGGER [dbo].[trg_Estimate_Audit]
+﻿CREATE OR ALTER TRIGGER [dbo].[trg_Estimate_Audit]
    ON  [dbo].[Estimate]
    AFTER INSERT, UPDATE, DELETE
 AS
@@ -35,8 +16,7 @@ BEGIN
         [UpdatedBy],
         [UpdatedOn],
         [AuditAction], -- The column to log the action
-        [AuditTimestamp],
-        [AuditUser]
+        [AuditTimestamp]
     )
     -- Part 1: Handle INSERT and UPDATE operations from the 'inserted' table.
     SELECT
@@ -54,12 +34,7 @@ BEGIN
             WHEN EXISTS (SELECT 1 FROM deleted d WHERE d.Id = i.Id) THEN 'UPD'
             ELSE 'INS'
         END AS AuditAction,
-        GETUTCDATE() AS AuditTimestamp,
-        -- For AuditUser, you might want to get the actual user performing the action.
-        -- If your application sets UpdatedBy/CreatedBy on the original table for the current action,
-        -- you could use COALESCE(i.UpdatedBy, i.CreatedBy). Otherwise, it might be NULL or SUSER_SNAME().
-        -- For this example, we'll use the UpdatedBy from 'inserted' if available, otherwise CreatedBy.
-        COALESCE(i.UpdatedBy, i.CreatedBy) AS AuditUser
+        GETUTCDATE() AS AuditTimestamp
     FROM
         inserted AS i
 
@@ -75,9 +50,7 @@ BEGIN
         d.[UpdatedBy],
         d.[UpdatedOn],
         'DEL' AS AuditAction, -- The action is always 'DEL' for this part.
-        GETUTCDATE() AS AuditTimestamp,
-        -- For deleted records, use UpdatedBy if available, otherwise CreatedBy.
-        COALESCE(d.UpdatedBy, d.CreatedBy) AS AuditUser
+        GETUTCDATE() AS AuditTimestamp
     FROM
         deleted AS d
     WHERE

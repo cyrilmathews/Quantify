@@ -21,11 +21,11 @@ namespace Quantify.Jobs.Core.Entities
         public int CreatedBy { get; set; }
 
         [Required]
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
         public int? UpdatedBy { get; set; }
 
-        public DateTime? UpdatedOn { get; set; }
+        public DateTime? UpdatedOn { get; set; } = DateTime.UtcNow;
 
         [Timestamp]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

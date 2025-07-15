@@ -29,11 +29,10 @@ namespace Quantify.Jobs.Controller.Controllers
         [HttpPost]
         public async Task<ActionResult<Client>> AddClient([FromBody] Client client, CancellationToken cancellationToken)
         {
-            var clientId = await _commandDispatcher.Dispatch<CreateClientCommand, int>(new CreateClientCommand(client), cancellationToken);
-            var createdClient = await _queryDispatcher.Dispatch<GetClientQuery, Client>(new GetClientQuery(clientId), cancellationToken);
+            var createdClient = await _commandDispatcher.Dispatch<CreateClientCommand, Client>(new CreateClientCommand(client), cancellationToken);
 
             if (createdClient == null)
-                return NotFound();
+                return StatusCode(500);
 
             return CreatedAtAction(nameof(GetClient), new { id = createdClient.Id }, createdClient);
         }

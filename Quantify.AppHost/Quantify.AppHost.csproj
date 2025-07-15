@@ -13,10 +13,12 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.0.0" />
+    <PackageReference Include="Aspire.Hosting.Azure.Functions" Version="(9.0-*,9.1]" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Quantify.Jobs.Controller\Quantify.Jobs.Api.csproj" />
+    <ProjectReference Include="..\Quantify.Jobs.FunctionApp\Quantify.Jobs.FunctionApp.csproj" />
   </ItemGroup>
 
 </Project>

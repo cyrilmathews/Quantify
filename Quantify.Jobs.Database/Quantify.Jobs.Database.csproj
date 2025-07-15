@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Scripts\001_RunOnce\001_Tables\0001_CT_TBL_Client.sql" />
+    <EmbeddedResource Include="Scripts\001_RunOnce\001_Tables\0003_CT_TBL_Outbox.sql" />
     <EmbeddedResource Include="Scripts\001_RunOnce\001_Tables\0002_CT_TBL_Job.sql" />
     <EmbeddedResource Include="Scripts\002_RunAlways\001_Triggers\TRG_ClientAudit.sql" />
     <EmbeddedResource Include="Scripts\002_RunAlways\001_Triggers\TRG_JobAudit.sql" />

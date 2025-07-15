@@ -11,13 +11,17 @@
   <ItemGroup>
     <None Remove="Scripts\0001.DDL_CT_TBL_Client.sql" />
     <None Remove="Scripts\0002.DDL_CT_TBL_Job.sql" />
+    <None Remove="Scripts\001_RunOnce\001_Schema\CT_SC_Jobs.sql" />
     <None Remove="Scripts\001_RunOnce\002_Tables\0001_CT_TBL_Client.sql" />
     <None Remove="Scripts\001_RunOnce\002_Tables\0002_CT_TBL_Job.sql" />
+    <None Remove="Scripts\001_RunOnce\002_Tables\0003_CT_TBL_Estimate.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\001_RunOnce\001_Schema\CT_SC_Jobs.sql" />
     <EmbeddedResource Include="Scripts\001_RunOnce\002_Tables\0001_CT_TBL_Client.sql" />
     <EmbeddedResource Include="Scripts\001_RunOnce\002_Tables\0002_CT_TBL_Job.sql" />
+    <EmbeddedResource Include="Scripts\001_RunOnce\002_Tables\0003_CT_TBL_Estimate.sql" />
     <EmbeddedResource Include="Scripts\002_RunAlways\001_Triggers\TRG_EstimateAudit.sql" />
   </ItemGroup>
 

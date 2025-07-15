@@ -1,13 +1,14 @@
 ﻿-- Create Client table
 CREATE TABLE [dbo].[Client] (
     [Id] INT IDENTITY(1,1) PRIMARY KEY,
-    [Code] VARCHAR(20) NOT NULL,
+    [Code] VARCHAR(20) NOT NULL CONSTRAINT UQ_Client_Code UNIQUE ([Code]),
     [Name] VARCHAR(100) NOT NULL,
     [CreatedBy] INT NOT NULL CONSTRAINT DF_Client_CreatedBy DEFAULT 1,
     [CreatedOn] DATETIME NOT NULL CONSTRAINT DF_Client_CreatedOn DEFAULT GETUTCDATE(),
     [UpdatedBy] INT NULL CONSTRAINT DF_Client_UpdatedBy DEFAULT 1,
     [UpdatedOn] DATETIME NULL CONSTRAINT DF_Client_UpdatedOn DEFAULT GETUTCDATE(),
-    [Version] ROWVERSION NOT NULL
+    [Version] ROWVERSION NOT NULL,
+    
 );
 
 -- Create ClientAudit table
