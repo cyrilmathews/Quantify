@@ -1,0 +1,44 @@
+@Quantify.Jobs.Api_HostAddress = http://localhost:61029/api
+
+### Create a new client
+POST {{Quantify.Jobs.Api_HostAddress}}/client
+Content-Type: application/json
+
+{
+  "code": "CLIENT002",
+  "name": "ENVIDIA"
+}
+
+###
+
+### Get a client by id (replace 1 with the actual client id)
+GET {{Quantify.Jobs.Api_HostAddress}}/client/1
+Accept: application/json
+
+###
+
+### Get all clients
+GET {{Quantify.Jobs.Api_HostAddress}}/client
+Accept: application/json
+
+###
+
+### Update a client (replace 1 with the actual client id)
+PUT {{Quantify.Jobs.Api_HostAddress}}/client/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "code": "CLIENT002",
+  "name": "Beta Corporation Updated",
+  "createdBy": 1,
+  "updatedBy": 2,
+  "version": "AAAAAAAAB9E="
+}
+
+###
+
+### Delete a client (replace 1 with the actual client id)
+DELETE {{Quantify.Jobs.Api_HostAddress}}/client/2
+
+###
