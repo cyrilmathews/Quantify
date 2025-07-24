@@ -35,6 +35,7 @@ namespace Quantify.Jobs.Controller
             AddRepositories(builder.Services);
             AddCQRS(builder.Services);
             AddEvents(builder.Services);
+            AddCors(builder.Services);
 
             var app = builder.Build();
 
@@ -49,15 +50,30 @@ namespace Quantify.Jobs.Controller
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            
+            app.UseCors("Development");
 
             app.MapControllers();
 
             app.Run();
         }
 
+        private static void AddCors(IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Development", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
+        }
+
         private static void AddHostedServices(IServiceCollection services)
         {
-            services.AddHostedService<ClientConsumerService>();
+            //services.AddHostedService<ClientConsumerService>();
         }
 
         private static void AddRepositories(IServiceCollection services)

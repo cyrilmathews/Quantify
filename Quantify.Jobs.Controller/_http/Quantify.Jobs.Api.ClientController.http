@@ -1,4 +1,4 @@
-@Quantify.Jobs.Api_HostAddress = http://localhost:61029/api
+@Quantify.Jobs.Api_HostAddress = http://localhost:5100/api
 
 ### Create a new client
 POST {{Quantify.Jobs.Api_HostAddress}}/client

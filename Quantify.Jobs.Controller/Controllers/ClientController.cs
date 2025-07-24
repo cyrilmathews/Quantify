@@ -7,7 +7,7 @@ using Quantify.Jobs.Core.Entities;
 namespace Quantify.Jobs.Controller.Controllers
 {
     [ApiController]
-    [Route("api/client")]
+    [Route("api/clients")]
     public class ClientController : ControllerBase
     {
         private readonly ICommandDispatcher _commandDispatcher;

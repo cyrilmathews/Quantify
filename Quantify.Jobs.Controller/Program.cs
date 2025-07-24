@@ -62,6 +62,8 @@ public class Program
 
         #endregion
 
+        AddCors(builder.Services);
+
         var app = builder.Build();
 
         app.MapDefaultEndpoints();
@@ -76,9 +78,23 @@ public class Program
 
         app.UseAuthorization();
 
+        app.UseCors("Development");
 
         app.MapControllers();
 
         app.Run();
+    }
+
+    private static void AddCors(IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("Development", policy =>
+            {
+                policy.WithOrigins("http://localhost:4200")
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+        });
     }
 }

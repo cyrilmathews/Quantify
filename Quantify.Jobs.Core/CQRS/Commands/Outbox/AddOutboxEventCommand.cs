@@ -30,7 +30,7 @@ namespace Quantify.Jobs.Core.CQRS.Commands.Outbox
             var outbox = new Entities.Outbox
             {
                 Id = command.EventInfo.EventId,
-                EventType = command.EventInfo.GetType().FullName,
+                EventType = command.EventInfo.GetType().Name,
                 EventData = command.Payload,
                 Timestamp = DateTime.UtcNow,
                 IsProcessed = false

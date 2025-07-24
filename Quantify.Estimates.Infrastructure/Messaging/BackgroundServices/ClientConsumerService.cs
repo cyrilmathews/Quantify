@@ -1,5 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Quantify.Estimates.Core.Events.Client;
@@ -11,7 +12,7 @@ namespace Quantify.Estimates.Infrastructure.Messaging.BackgroundServices
     {
         private readonly ILogger<ClientConsumerService> _logger;
         private readonly IConfiguration _configuration;
-        private readonly IEventDispatcher _eventDispatcher;
+        private readonly IServiceProvider _serviceProvider;
         private ServiceBusClient _serviceBusClient;
         private ServiceBusProcessor _serviceBusProcessor;
         private readonly string _serviceBusConnectionString;
@@ -22,15 +23,14 @@ namespace Quantify.Estimates.Infrastructure.Messaging.BackgroundServices
         public ClientConsumerService(
             ILogger<ClientConsumerService> logger, 
             IConfiguration configuration, 
-            IEventDispatcher eventDispatcher)
+            IServiceProvider serviceProvider)
         {
             _logger = logger;
             _configuration = configuration;
-            _eventDispatcher = eventDispatcher;
+            _serviceProvider = serviceProvider;
             _serviceBusConnectionString = _configuration["ServiceBusConnection"] ?? string.Empty;
-            _serviceBusTopicName = _configuration.GetSection("ServiceBusTopicNames")["OrderEvents"] ?? string.Empty;
+            _serviceBusTopicName = _configuration.GetSection("ServiceBusTopicNames")["ClientEvents"] ?? string.Empty;
             _serviceBusSubscriptionName = _configuration.GetSection("ServiceBusSubscriptionNames")["ClientSubscription"] ?? string.Empty;
-
             _eventHandlers = GetEventHandlers();
 
             ValidateConfiguration();
@@ -40,7 +40,12 @@ namespace Quantify.Estimates.Infrastructure.Messaging.BackgroundServices
         {
             return new Dictionary<string, Func<string, string, CancellationToken, Task>>
             {
-                [nameof(ClientCreatedEvent)] = async (body, messageId, cancellationToken) => await _eventDispatcher.Dispatch(DeserializeEvent<ClientCreatedEvent>(body, messageId), cancellationToken)
+                [nameof(ClientCreatedEvent)] = async (body, messageId, cancellationToken) =>
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    var eventDispatcher = scope.ServiceProvider.GetRequiredService<IEventDispatcher>();
+                    await eventDispatcher.Dispatch(DeserializeEvent<ClientCreatedEvent>(body, messageId), cancellationToken);
+                }
             };
         }
 

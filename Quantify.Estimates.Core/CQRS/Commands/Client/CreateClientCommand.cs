@@ -37,6 +37,7 @@ namespace Quantify.Estimates.Core.CQRS.Commands.Client
             }
 
             var clientId = await _clientRepository.AddAsync(command.Client);
+            client = await _clientRepository.GetByIdAsync(command.Client.Id);
 
             if (client == null)
             {
