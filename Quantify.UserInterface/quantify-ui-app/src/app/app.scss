@@ -1,0 +1,21 @@
+.sidenav-container {
+  height: 100vh; // Make the container take full viewport height
+}
+
+.app-sidenav {
+  width: 250px; // Set a width for your sidenav
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto; // Pushes content to the right
+}
+
+.content {
+  padding: 16px; // Add some padding around your main content
+}
+
+@media (min-width: 768px) {
+  .app-sidenav {
+    width: 200px;
+  }
+}

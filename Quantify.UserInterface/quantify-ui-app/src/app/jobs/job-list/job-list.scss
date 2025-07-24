@@ -1,0 +1,45 @@
+.job-list-container {
+  padding: 16px;
+  
+  .job-list-toolbar {
+    margin-bottom: 16px;
+    border-radius: 4px;
+    
+    .spacer {
+      flex: 1 1 auto;
+    }
+  }
+  
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 64px;
+  }
+  
+  .job-list-card {
+    .jobs-table {
+      width: 100%;
+      
+      .mat-mdc-header-cell {
+        font-weight: bold;
+      }
+      
+      .mat-mdc-cell {
+        .no-client {
+          color: #666;
+          font-style: italic;
+        }
+      }
+    }
+  }
+}
+
+// Action buttons spacing
+.mat-mdc-icon-button {
+  margin-right: 8px;
+  
+  &:last-child {
+    margin-right: 0;
+  }
+}

@@ -1,0 +1,72 @@
+<div class="job-list-container">
+  <!-- Header -->
+  <mat-toolbar class="job-list-toolbar">
+    <span>Jobs</span>
+    <span class="spacer"></span>
+    <button matButton="tonal" color="primary">
+      <mat-icon>add</mat-icon>
+      Add Job
+    </button>
+  </mat-toolbar>
+
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <!-- Job list -->
+  <mat-card *ngIf="!isLoading" class="job-list-card">
+    <mat-card-content>
+      <table mat-table [dataSource]="jobs$" class="jobs-table">
+        
+        <!-- Code Column -->
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef>Code</th>
+          <td mat-cell *matCellDef="let job">
+            <mat-chip color="primary" selected>{{ job.code }}</mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let job">{{ job.name }}</td>
+        </ng-container>
+
+        <!-- Client Column -->
+        <ng-container matColumnDef="client">
+          <th mat-header-cell *matHeaderCellDef>Client</th>
+          <td mat-cell *matCellDef="let job">
+            <span *ngIf="job.client">{{ job.client.name }}</span>
+            <span *ngIf="!job.client" class="no-client">No client assigned</span>
+          </td>
+        </ng-container>
+
+        <!-- Created On Column -->
+        <ng-container matColumnDef="createdOn">
+          <th mat-header-cell *matHeaderCellDef>Created On</th>
+          <td mat-cell *matCellDef="let job">{{ formatDate(job.createdOn) }}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let job">
+            <button mat-icon-button color="primary" (click)="onViewJob(job)" matTooltip="View">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" (click)="onEditJob(job)" matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="onDeleteJob(job)" matTooltip="Delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>
