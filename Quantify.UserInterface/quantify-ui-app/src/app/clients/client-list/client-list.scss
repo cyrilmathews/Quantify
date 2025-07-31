@@ -18,21 +18,19 @@
   }
   
   .client-list-card {
+    background-color: var(--mat-sys-surface-container-low);
+    
     .clients-table {
       width: 100%;
       
       .mat-mdc-header-cell {
         font-weight: bold;
+        color: var(--mat-sys-on-surface-variant);
+      }
+      
+      .mat-mdc-cell {
+        color: var(--mat-sys-on-surface);
       }
     }
-  }
-}
-
-// Action buttons spacing
-.mat-mdc-icon-button {
-  margin-right: 8px;
-  
-  &:last-child {
-    margin-right: 0;
   }
 }

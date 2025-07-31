@@ -3,7 +3,7 @@
   <mat-toolbar class="client-list-toolbar">
     <span>Clients</span>
     <span class="spacer"></span>
-    <button mat-button color="primary" routerLink="/clients/new">
+    <button matButton="tonal" class="accent" routerLink="/clients/new">
       <mat-icon>add</mat-icon>
       Add Client
     </button>
@@ -23,7 +23,7 @@
         <ng-container matColumnDef="code">
           <th mat-header-cell *matHeaderCellDef>Code</th>
           <td mat-cell *matCellDef="let client">
-            <mat-chip color="primary" selected>{{ client.code }}</mat-chip>
+            <mat-chip>{{ client.code }}</mat-chip>
           </td>
         </ng-container>
 
@@ -33,23 +33,23 @@
           <td mat-cell *matCellDef="let client">{{ client.name }}</td>
         </ng-container>
 
-        <!-- Replicated On Column -->
-        <ng-container matColumnDef="replicatedOn">
-          <th mat-header-cell *matHeaderCellDef>Replicated On</th>
-          <td mat-cell *matCellDef="let client">{{ formatDate(client.replicatedOn) }}</td>
+        <!-- Created On Column -->
+        <ng-container matColumnDef="createdOn">
+          <th mat-header-cell *matHeaderCellDef>Created On</th>
+          <td mat-cell *matCellDef="let client">{{ formatDate(client.createdOn) }}</td>
         </ng-container>
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let client">
-            <button mat-icon-button color="primary" (click)="onViewClient(client)" matTooltip="View">
+            <button matIconButton (click)="onViewClient(client)" matTooltip="View">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button mat-icon-button color="accent" (click)="onEditClient(client)" matTooltip="Edit">
+            <button matIconButton (click)="onEditClient(client)" matTooltip="Edit">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="onDeleteClient(client)" matTooltip="Delete">
+            <button matIconButton (click)="onDeleteClient(client)" matTooltip="Delete">
               <mat-icon>delete</mat-icon>
             </button>
           </td>

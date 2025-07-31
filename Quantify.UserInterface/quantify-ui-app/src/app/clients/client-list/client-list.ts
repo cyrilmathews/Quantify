@@ -32,7 +32,7 @@ import { ClientService } from '../client-service';
 })
 export class ClientList implements OnInit {
   clients$: Observable<Client[]>;
-  displayedColumns: string[] = ['code', 'name', 'replicatedOn', 'actions'];
+  displayedColumns: string[] = ['code', 'name', 'createdOn', 'actions'];
   isLoading = true;
 
   constructor(
