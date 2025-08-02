@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Quantify.Jobs.Core.CQRS.Base;
 using Quantify.Jobs.Core.CQRS.Commands.Job;
@@ -8,6 +9,7 @@ namespace Quantify.Jobs.Controller.Controllers
 {
     [ApiController]
     [Route("api/job")]
+    [Authorize(Policy = "RequiresJobsAllScope")]
     public class JobController : ControllerBase
     {
         private readonly ICommandDispatcher _commandDispatcher;

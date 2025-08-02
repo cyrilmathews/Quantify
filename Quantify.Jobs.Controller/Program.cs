@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
 using Quantify.Jobs.Core.CQRS.Base;
 using Quantify.Jobs.Core.CQRS.Commands.Client;
 using Quantify.Jobs.Core.CQRS.Commands.Job;
@@ -20,49 +22,20 @@ public class Program
         builder.AddServiceDefaults();
 
         // Add services to the container.
-
         builder.Services.AddControllers();
-        // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
         builder.Services.AddSingleton<IDbConnectionFactory>(sp => new SqlConnectionFactory(connectionString));
 
-        #region Repositories
-        builder.Services.AddScoped<IClientRepository, ClientRepository>();
-        builder.Services.AddScoped<IJobRepository, JobRepository>();
-        builder.Services.AddScoped<IOutboxRepository, OutboxRepository>();
-        #endregion
+        AddAuthentication(builder);
+        AddAuthorization(builder);
 
-        #region CQRS
-        builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
-        builder.Services.AddScoped<IQueryDispatcher, QueryDispatcher>();
+        AddCors(builder);
 
-        #region Queries
-        builder.Services.AddTransient<IQueryHandler<GetClientQuery, Client>, GetClientQueryHandler>();
-        builder.Services.AddTransient<IQueryHandler<GetAllClientsQuery, IEnumerable<Client>>, GetAllClientsQueryHandler>();
+        AddRepositories(builder);
+        AddCQRS(builder);
 
-        builder.Services.AddTransient<IQueryHandler<GetJobQuery, Job?>, GetJobQueryHandler>();
-        builder.Services.AddTransient<IQueryHandler<GetAllJobsQuery, IEnumerable<Job>>, GetAllJobsQueryHandler>();
-        builder.Services.AddTransient<IQueryHandler<GetJobsByClientIdQuery, IEnumerable<Job>>, GetJobsByClientIdQueryHandler>();
-        #endregion
-
-        #region Commands
-        builder.Services.AddTransient<ICommandHandler<CreateClientCommand, Client>, CreateClientCommandHandler>();
-        builder.Services.AddTransient<ICommandHandler<UpdateClientCommand, bool>, UpdateClientCommandHandler>();
-        builder.Services.AddTransient<ICommandHandler<DeleteClientCommand, bool>, DeleteClientCommandHandler>();
-
-        builder.Services.AddTransient<ICommandHandler<CreateJobCommand, int>, CreateJobCommandHandler>();
-        builder.Services.AddTransient<ICommandHandler<UpdateJobCommand, bool>, UpdateJobCommandHandler>();
-        builder.Services.AddTransient<ICommandHandler<DeleteJobCommand, bool>, DeleteJobCommandHandler>();
-        
-        builder.Services.AddTransient<ICommandHandler<AddOutboxEventCommand, bool>, AddOutboxEventCommandHandler>();
-        #endregion
-
-        #endregion
-
-        AddCors(builder.Services);
 
         var app = builder.Build();
 
@@ -75,19 +48,37 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
         app.UseCors("Development");
-
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.MapControllers();
 
         app.Run();
     }
 
-    private static void AddCors(IServiceCollection services)
+    private static void AddAuthorization(WebApplicationBuilder builder)
     {
-        services.AddCors(options =>
+        // Add Authorization policies if you need more granular control than simple roles
+        builder.Services.AddAuthorization(options =>
+        {
+            // Define a policy for "Products.ReadWrite" scope
+            options.AddPolicy("RequiresJobsAllScope", policy =>
+                policy.RequireClaim("http://schemas.microsoft.com/identity/claims/scope", builder.Configuration["AllowedScopes"]));
+            // Or, if using application permissions (app roles for daemon apps), you might use:
+            // policy.RequireRole("Products.ReadWrite.App");
+        });
+    }
+
+    private static void AddAuthentication(WebApplicationBuilder builder)
+    {
+        // Configure Azure AD B2C authentication with Microsoft.Identity.Web
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+    }
+
+    private static void AddCors(WebApplicationBuilder builder)
+    {
+        builder.Services.AddCors(options =>
         {
             options.AddPolicy("Development", policy =>
             {
@@ -96,5 +87,44 @@ public class Program
                       .AllowAnyHeader();
             });
         });
+    }
+
+    private static void AddRepositories(WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IClientRepository, ClientRepository>();
+        builder.Services.AddScoped<IJobRepository, JobRepository>();
+        builder.Services.AddScoped<IOutboxRepository, OutboxRepository>();
+    }
+
+    private static void AddCQRS(WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
+        builder.Services.AddScoped<IQueryDispatcher, QueryDispatcher>();
+
+        AddQueries(builder);
+        AddCommands(builder);
+    }
+
+    private static void AddQueries(WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<IQueryHandler<GetClientQuery, Client>, GetClientQueryHandler>();
+        builder.Services.AddTransient<IQueryHandler<GetAllClientsQuery, IEnumerable<Client>>, GetAllClientsQueryHandler>();
+
+        builder.Services.AddTransient<IQueryHandler<GetJobQuery, Job?>, GetJobQueryHandler>();
+        builder.Services.AddTransient<IQueryHandler<GetAllJobsQuery, IEnumerable<Job>>, GetAllJobsQueryHandler>();
+        builder.Services.AddTransient<IQueryHandler<GetJobsByClientIdQuery, IEnumerable<Job>>, GetJobsByClientIdQueryHandler>();
+    }
+
+    private static void AddCommands(WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<ICommandHandler<CreateClientCommand, Client>, CreateClientCommandHandler>();
+        builder.Services.AddTransient<ICommandHandler<UpdateClientCommand, bool>, UpdateClientCommandHandler>();
+        builder.Services.AddTransient<ICommandHandler<DeleteClientCommand, bool>, DeleteClientCommandHandler>();
+
+        builder.Services.AddTransient<ICommandHandler<CreateJobCommand, int>, CreateJobCommandHandler>();
+        builder.Services.AddTransient<ICommandHandler<UpdateJobCommand, bool>, UpdateJobCommandHandler>();
+        builder.Services.AddTransient<ICommandHandler<DeleteJobCommand, bool>, DeleteJobCommandHandler>();
+
+        builder.Services.AddTransient<ICommandHandler<AddOutboxEventCommand, bool>, AddOutboxEventCommandHandler>();
     }
 }
